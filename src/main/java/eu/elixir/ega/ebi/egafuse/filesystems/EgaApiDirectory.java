@@ -83,8 +83,8 @@ public class EgaApiDirectory extends EgaApiPath {
 
     @Override
     public void getattr(FileStat stat) {
-        //stat.st_mode.set(FileStat.S_IFDIR | 0755);
-        stat.st_mode.set(FileStat.S_IFDIR | 0550);
+        stat.st_mode.set(FileStat.S_IFDIR | 0755);
+        //stat.st_mode.set(FileStat.S_IFDIR | 0550);
         String name_ = getRootName();
         stat.st_uid.set(EgaFuse.getUid(name_));
         stat.st_gid.set(EgaFuse.getGid(name_));
