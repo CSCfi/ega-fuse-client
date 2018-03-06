@@ -65,7 +65,7 @@ public class EgaFuse extends FuseStubFS {
      */
     private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
     // EGA AAI
-    private static final String TOKEN_SERVER_URL = "https://ega.ebi.ac.uk:8443/ega-openid-connect-server/token";
+    private static final String TOKEN_SERVER_URL = "http://86.50.169.120:8080/ega-openid-connect-server/token";
     private static final String AUTHORIZATION_SERVER_URL = "https://ega.ebi.ac.uk:8443/ega-openid-connect-server/authorize";
     // *************************************************************************
     protected static HashMap<String, String> aaiConfig = null;
@@ -79,7 +79,7 @@ public class EgaFuse extends FuseStubFS {
     // *************************************************************************
     private static String accessToken; // If missing: obtain; requires aaiUrl
     private static String refreshToken; // Test
-    private static String baseUrl = "https://ega.ebi.ac.uk:8051/elixir/data"; // API URL. Required
+    private static String baseUrl = "http://86.50.169.120:8080/elixir/data"; // API URL. Required
     // for CSC: "http://data.epouta.lega.csc.fi:8686/elixir/data"; -- Specify via option upon start
     private static String cegaUrl = "https://ega.ebi.ac.uk:8051/elixir/central"; // API URL. Required
     private static Options options = new Options();
@@ -220,11 +220,13 @@ public class EgaFuse extends FuseStubFS {
                 mountDir = cmd.getOptionValue("m");
             }
             File mntTest = new File(mountDir);
+            /** REMOVED FOR WINDOWS TESTING
             if (!mntTest.exists() && !mntTest.isDirectory()) {
                 System.out.println(mntTest + " can not be used as mount point.");
                 System.out.println("Ensure that the directory path exists and is empty!");
                 System.exit(1);
             }
+            **/
             if (cmd.hasOption("t")) {       // ACCESS TOKEN specified
                 accessToken = cmd.getOptionValue("t");
             }
