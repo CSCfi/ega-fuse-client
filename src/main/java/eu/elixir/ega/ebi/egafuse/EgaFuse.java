@@ -65,13 +65,8 @@ public class EgaFuse extends FuseStubFS {
      */
     private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
     // EGA AAI
-    /** ORIGINALS
-    *	private static final String TOKEN_SERVER_URL = "http://86.50.169.120:8080/ega-openid-connect-server/token";
-    *	private static final String AUTHORIZATION_SERVER_URL = "https://ega.ebi.ac.uk:8443/ega-openid-connect-server/authorize";
-    **/
-    // Parameterize TOKEN_SERVER_URL and AUTHORIZATION_SERVER_URL
-    private static String TOKEN_SERVER_URL = "";
-    private static String AUTHORIZATION_SERVER_URL = "";
+    private static String TOKEN_SERVER_URL = "https://ega.ebi.ac.uk:8443/ega-openid-connect-server/token";
+    private static String AUTHORIZATION_SERVER_URL = "https://ega.ebi.ac.uk:8443/ega-openid-connect-server/authorize";
     // *************************************************************************
     protected static HashMap<String, String> aaiConfig = null;
     private static boolean grid = false;
@@ -84,14 +79,9 @@ public class EgaFuse extends FuseStubFS {
     // *************************************************************************
     private static String accessToken; // If missing: obtain; requires aaiUrl
     private static String refreshToken; // Test
-    /** ORIGINALS
-    *	private static String baseUrl = "http://86.50.169.120:8080/elixir/data"; // API URL. Required
-    *	// for CSC: "http://data.epouta.lega.csc.fi:8686/elixir/data"; -- Specify via option upon start
-    *	private static String cegaUrl = "https://ega.ebi.ac.uk:8051/elixir/central"; // API URL. Required
-    **/
-    // Parameterize baseURL and cegaURL
-    private static String baseUrl = "";
-    private static String cegaUrl = "";
+    private static String baseUrl = "https://ega.ebi.ac.uk:8051/elixir/data"; // API URL. Required
+	// for CSC: "http://data.epouta.lega.csc.fi:8686/elixir/data"; -- Specify via option upon start
+   	private static String cegaUrl = "https://ega.ebi.ac.uk:8051/elixir/central"; // API URL. Required
     private static Options options = new Options();
     /**
      * Global instance of the {@link DataStoreFactory}. The best practice is to make it a single
@@ -191,7 +181,6 @@ public class EgaFuse extends FuseStubFS {
         options.addOption("ft", "filetoken", true, "Specify File containing Access Token");
         options.addOption("g", "gridfuse", true, "Starts in GridFTP mode; required: orgaization");
         options.addOption("gf", "gridfile", true, "Account Mapping File");
-        //options.addOption("url", "baseurl", true, "Alternate FUSE Base URL");
         options.addOption("url_token", "url_token_server", true, "URL for active EGA API Token generator");
         options.addOption("url_auth", "url_authorization_server", true, "URL for active Authorization server");
         options.addOption("url_base", "url_base", true, "FUSE base URL");
@@ -212,6 +201,7 @@ public class EgaFuse extends FuseStubFS {
                 help();
                 System.exit(0);
             }
+            // Provide alternative API URLs for services, defaults to EGA EBI URLs if none provided
             if (cmd.hasOption("url_token")) {
                 TOKEN_SERVER_URL = cmd.getOptionValue("url_token");
             }
