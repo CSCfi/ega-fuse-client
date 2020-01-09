@@ -129,9 +129,11 @@ public class EgaFuse extends FuseStubFS {
     private EgaApiDirectory rootDirectory = new EgaApiDirectory("", null);
 
     public EgaFuse(String token) { // Only valid with Access Token!
+        System.out.println("### EgaFuse: Before if with token: " + token + " ###");
         if (SCOPE.equalsIgnoreCase("openid")) {
             rootDirectory.add(new EgaDatasetDirectory("Datasets", rootDirectory));
         }
+        System.out.println("### EgaFuse: After if ###");
     }
 
     public EgaFuse(boolean basicgrid) { // Only valid Basic Auth Header
@@ -644,6 +646,7 @@ public class EgaFuse extends FuseStubFS {
     @Override
     public int getattr(String path, FileStat stat) {
         EgaApiPath p = getPath(path);
+        System.out.println("### EgaFuse.getattr: EgaApiPath is " + p + " ###");
         if (p != null) {
             p.getattr(stat);
             return 0;
@@ -664,6 +667,7 @@ public class EgaFuse extends FuseStubFS {
     @Override
     public int read(String path, Pointer buf, @size_t long size, @off_t long offset, FuseFileInfo fi) {
         EgaApiPath p = getPath(path);
+        System.out.println("### EgaFuse.read: EgaApiPath is " + p + " ###");
         if (p == null) {
             return -ErrorCodes.ENOENT();
         }
@@ -683,6 +687,7 @@ public class EgaFuse extends FuseStubFS {
     @Override
     public int unlink(String path) {
         EgaApiPath p = getPath(path);
+        System.out.println("### EgaFuse.getattr: EgaApiPath is " + p + " ###");
         if (p == null) {
             return -ErrorCodes.ENOENT();
         }
@@ -693,7 +698,7 @@ public class EgaFuse extends FuseStubFS {
     @Override
     public int open(String path, FuseFileInfo fi) {
         EgaApiPath p = getPath(path);
-
+        System.out.println("### EgaFuse.getattr: EgaApiPath is " + p + " ###");
         if (p == null) {
             return -ErrorCodes.ENOENT();
         }

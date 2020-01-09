@@ -56,7 +56,7 @@ public class EgaApiDirectory extends EgaApiPath {
 
     @Override
     public EgaApiPath find(String path) {
-
+        System.out.println("### EgaApiPath.find: path is " + path + " ###");
         if (super.find(path) != null) {
             return super.find(path);
         }
