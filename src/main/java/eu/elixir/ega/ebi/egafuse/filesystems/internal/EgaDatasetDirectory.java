@@ -41,6 +41,7 @@ public class EgaDatasetDirectory extends EgaApiDirectory {
 
     @Override
     public synchronized void read(Pointer buf, FuseFillDir filler) {
+        System.out.println("### EgaDatasetDirectory.read: name is " + name + " ###");
         if (contents == null || contents.size() == 0) {
             if (name.equalsIgnoreCase("datasets")) {
                 getDatasets();
@@ -61,18 +62,21 @@ public class EgaDatasetDirectory extends EgaApiDirectory {
         OkHttpClient client = SSLUtilities.getUnsafeOkHttpClient();
 
         // List all Datasets
+        System.out.println("### EgaDatasetDirectory.getDatasets: before try ###");
         try {
             Request datasetRequest = new Request.Builder()
                     .url(getBaseUrl() + "/metadata/datasets")
                     .addHeader("Authorization", "Bearer " + getAccessToken())
                     .build();
-
+            System.out.println("### EgaDatasetDirectory.getDatasets: getBaseUrl is " + getBaseUrl() + " ###");
             // Execute the request and retrieve the response.
             Response response = null;
             int tryCount = 3;
             while (tryCount-- > 0 && (response == null || !response.isSuccessful())) {
+                System.out.println("### EgaDatasetDirectory.getDatasets: before response try ###");
                 try {
                     response = client.newCall(datasetRequest).execute();
+                    System.out.println("### EgaDatasetDirectory.getDatasets: before response if ###");
                     if (response.code() == 500) { // Expired Token - Try Refresh
                         EgaFuse.refreshAuthorize();
                         datasetRequest = new Request.Builder()
@@ -80,7 +84,10 @@ public class EgaDatasetDirectory extends EgaApiDirectory {
                                 .addHeader("Authorization", "Bearer " + getAccessToken())
                                 .build();
                     }
+                    System.out.println("### EgaDatasetDirectory.getDatasets: after response if ###");
+                    System.out.println("### EgaDatasetDirectory.getDatasets: " + response.code() + " ###");
                 } catch (Exception ex) {
+                    System.out.println("### EgaDatasetDirectory.getDatasets: EXCEPTION " + ex.toString() + " ###");
                 }
             }
             ResponseBody body = response.body();
@@ -89,6 +96,7 @@ public class EgaDatasetDirectory extends EgaApiDirectory {
             System.out.println(datasets.size() + " datasets found.");
 
             for (String dataset : datasets) {
+                System.out.println("### EgaDatasetDirectory.getDatasets: in for loop datasets " + datasets + " ###");
                 EgaDatasetDirectory egaDatasetDirectory = new EgaDatasetDirectory(dataset, this);
                 contents.add(egaDatasetDirectory);
             }

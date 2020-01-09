@@ -46,7 +46,9 @@ public class EgaApiDirectory extends EgaApiPath {
 
     // Operations
     public synchronized void add(EgaApiPath p) {
+        System.out.println("### EgaApiDirectory.add: p is " + p + " ###");
         contents.add(p);
+        System.out.println("### EgaApiDirectory.add: contents is " + contents.isEmpty() + " ###");
         p.setParent(this);
     }
 
@@ -62,11 +64,13 @@ public class EgaApiDirectory extends EgaApiPath {
         }
         while (path.startsWith("/")) {
             path = path.substring(1);
+            System.out.println("### EgaApiPath.find: path in while loop is " + path + " ###");
         }
         synchronized (this) {
             if (!path.contains("/")) {
                 for (EgaApiPath p : contents) {
                     if (p.getName().equals(path)) {
+                        System.out.println("### EgaApiPath.find: path in synchronized is " + p + " ###");
                         return p;
                     }
                 }
@@ -74,6 +78,7 @@ public class EgaApiDirectory extends EgaApiPath {
             }
             String nextName = path.substring(0, path.indexOf("/"));
             String rest = path.substring(path.indexOf("/"));
+            System.out.println("### EgaApiPath.find: rest is " + rest + " ###");
             for (EgaApiPath p : contents) {
                 if (p.getName().equals(nextName)) {
                     return p.find(rest);
