@@ -46,9 +46,9 @@ public class EgaApiDirectory extends EgaApiPath {
 
     // Operations
     public synchronized void add(EgaApiPath p) {
-        System.out.println("### EgaApiDirectory.add: p is " + p + " ###");
+        System.out.println("### EgaApiDirectory.add: p is " + p.toString() + " ###");
         contents.add(p);
-        System.out.println("### EgaApiDirectory.add: contents is " + contents.isEmpty() + " ###");
+        System.out.println("### EgaApiDirectory.add: do we have empty contents ? " + contents.isEmpty() + " ###");
         p.setParent(this);
     }
 
@@ -70,7 +70,7 @@ public class EgaApiDirectory extends EgaApiPath {
             if (!path.contains("/")) {
                 for (EgaApiPath p : contents) {
                     if (p.getName().equals(path)) {
-                        System.out.println("### EgaApiPath.find: path in synchronized is " + p + " ###");
+                        System.out.println("### EgaApiPath.find: path in synchronized is " + p.toString() + " ###");
                         return p;
                     }
                 }
@@ -93,8 +93,9 @@ public class EgaApiDirectory extends EgaApiPath {
         if (Platform.IS_WINDOWS) {
             stat.st_mode.set(FileStat.S_IFDIR | 0755);
         } else {
-            stat.st_mode.set(FileStat.S_IFDIR | 0550);
+            stat.st_mode.set(FileStat.S_IFDIR | 0755);
         }
+        System.out.println("### EgaApiDirectory.getattr: Filestat is " + stat.toString() + " ###");
         String name_ = getRootName();
         stat.st_uid.set(EgaFuse.getUid(name_));
         stat.st_gid.set(EgaFuse.getGid(name_));

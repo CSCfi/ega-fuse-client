@@ -13,7 +13,7 @@
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-              <mainClass>eu.elixir.ega.ebi.egafuse.EgaFuseFS</mainClass>
+              <mainClass>eu.elixir.ega.ebi.egafuse.EgaFuse</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -70,7 +70,7 @@
     <repository>
       <id>central</id>
       <name>bintray</name>
-      <url>http://jcenter.bintray.com</url>
+      <url>https://jcenter.bintray.com</url>
     </repository>
   </repositories>
   <properties>

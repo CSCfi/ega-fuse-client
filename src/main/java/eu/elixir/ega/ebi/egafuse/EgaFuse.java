@@ -124,15 +124,15 @@ public class EgaFuse extends FuseStubFS {
      * - Build Virtual Directory Structure by interactine with API
      *
      * Directories are empty until they are accessed ('ls')
-     * Upon first access there is an API call to popuate the directories
+     * Upon first access there is an API call to populate the directories
      */
     private EgaApiDirectory rootDirectory = new EgaApiDirectory("", null);
 
     public EgaFuse(String token) { // Only valid with Access Token!
         System.out.println("### EgaFuse: Before if with token: " + token + " ###");
-        if (SCOPE.equalsIgnoreCase("openid")) {
-            rootDirectory.add(new EgaDatasetDirectory("Datasets", rootDirectory));
-        }
+        //if (SCOPE.equalsIgnoreCase("openid")) {
+        rootDirectory.add(new EgaDatasetDirectory("Datasets", rootDirectory));
+        //}
         System.out.println("### EgaFuse: After if ###");
     }
 
@@ -646,7 +646,7 @@ public class EgaFuse extends FuseStubFS {
     @Override
     public int getattr(String path, FileStat stat) {
         EgaApiPath p = getPath(path);
-        System.out.println("### EgaFuse.getattr: EgaApiPath is " + p + " ###");
+        System.out.println("### EgaFuse.getattr: EgaApiPath is " + p.toString() + " ###");
         if (p != null) {
             p.getattr(stat);
             return 0;
@@ -667,7 +667,7 @@ public class EgaFuse extends FuseStubFS {
     @Override
     public int read(String path, Pointer buf, @size_t long size, @off_t long offset, FuseFileInfo fi) {
         EgaApiPath p = getPath(path);
-        System.out.println("### EgaFuse.read: EgaApiPath is " + p + " ###");
+        System.out.println("### EgaFuse.read: EgaApiPath is " + p.toString() + " ###");
         if (p == null) {
             return -ErrorCodes.ENOENT();
         }
