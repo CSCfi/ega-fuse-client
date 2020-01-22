@@ -85,13 +85,13 @@ public class EgaRemoteFile extends EgaApiFile {
     @Override
     public void getattr(FileStat stat) {
         stat.st_mode.set(FileStat.S_IFREG | 0444);
-        long size = (type.equalsIgnoreCase("CIP")) ? theFile.getFileSize() - 16 : theFile.getFileSize();
+        long size = (type.equalsIgnoreCase("CIP")) ? theFile.getFileSize() - 16 : theFile.getFileSize() -32;
         stat.st_size.set(size);
     }
 
     // Read Bytes from API
     public int read(Pointer buffer, long size, long offset) {
-        long fsize = (type.equalsIgnoreCase("CIP")) ? this.theFile.getFileSize() - 16 : this.theFile.getFileSize();
+        long fsize = (type.equalsIgnoreCase("CIP")) ? this.theFile.getFileSize() - 16 : this.theFile.getFileSize() -32;
         int bytesToRead = (int) Math.min(fsize - offset, size);
         if ((offset >= fsize) || (bytesToRead <= 0)) return -1;
 
@@ -121,7 +121,7 @@ public class EgaRemoteFile extends EgaApiFile {
     }
 
     private byte[] get(int page_number) throws ExecutionException {
-        long size = (type.equalsIgnoreCase("CIP")) ? theFile.getFileSize() - 16 : theFile.getFileSize();
+        long size = (type.equalsIgnoreCase("CIP")) ? theFile.getFileSize() - 16 : theFile.getFileSize() -32;
         int maxPage = (int) (size / PAGE_SIZE + 1);
 
         int firstPage = page_number > 0 ? page_number - 1 : 0;
@@ -142,7 +142,7 @@ public class EgaRemoteFile extends EgaApiFile {
     private byte[] populateCache(int page_number) throws IOException {
 //	System.out.println("populateCache(): page_number: " + page_number);
         long endC = ((long) page_number) * PAGE_SIZE + PAGE_SIZE;
-        long toRead = (endC > theFile.getFileSize() - 16 ? (theFile.getFileSize() - 16 - (page_number * PAGE_SIZE)) : PAGE_SIZE);
+        long toRead = (endC > theFile.getFileSize() ? (theFile.getFileSize() -32 - (page_number * PAGE_SIZE)) : PAGE_SIZE);
         long bytesToRead = toRead;
         //int bytesToRead = PAGE_SIZE;
         long offset = ((long) page_number) * PAGE_SIZE;
